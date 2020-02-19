@@ -9,12 +9,12 @@ Dans quels dossiers bash trouve-t-il les commandes tapées par l’utilisateur?
 Il les trouves dans les dossiers bash présent dans le dossier bin maid aussi dans la varibale $PATH
 
 **2**
-Quelle variable d’environnement permet à la commande **cd** tapée sans argument de vous ramener dansvotre répertoire personnel ?  
+Quelle variable d’environnement permet à la commande **cd** tapée sans argument de vous ramener dans votre répertoire personnel ?  
 La variable $HOME.
 
 **3**
 Explicitez le rôle des variables **LANG,PWD,OLDPWD,SHELL et _**.  
-*LANG : est la variable définit la langue
+*LANG : est la variable qui définit la langue
 *PWD : permet de savoir dans quel repertoire on se trouve (Print Working Directory)
 *OLDPWD : Répertoire dans lequel on se trouvait avant de faire un cd
 *SHELL : intepréteur de commande utilisateur
@@ -26,25 +26,25 @@ MY_VAR=test
 echo $MY_VAR -> affiche test
 
 **5**
-apez ensuite la commande bash. Que fait-elle? La variable MY_VAR existe-t-elle? Expliquez. A la fin de cette question, tapez la commandeexitpour revenir dans votre session initiale.  
-Quand on refait echo, cela affiche test 
+Tapez ensuite la commande bash. Que fait-elle? La variable MY_VAR existe-t-elle? Expliquez. A la fin de cette question, tapez la commande exitpour revenir dans votre session initiale.  
+Quand on refait echo, cela affiche test.
 
 **6**
-Transformez MY_VAR en une variable d’environnement et recommencez la question précédente. Expli-quez.  
+Transformez MY_VAR en une variable d’environnement et recommencez la question précédente. Expliquez.  
 xport MY_VAR=test
 echo $MY_VAR -> affiche test
 Après si on fait bash, quand on refait echo, cela affiche test.
-Explivaton : variable locale n'est dispo que dans le bash dans lequel on se trouve donc dès que l'on fait un nouveau bash ou que l'on tape exit on n'aura plus cette variable. Lorsque l'on fait export, la variable est dispo partout.
+Explicaton : variable locale n'est dispo que dans le bash dans lequel on se trouve donc dès que l'on fait un nouveau bash ou que l'on tape exit on n'aura plus cette variable. Lorsque l'on fait export, la variable est dispo partout.
 
 **7**
-Créer la variable d’environnement NOMS ayant pour contenu vos noms de binômes séparés par un espace.Aﬀicher la valeur de NOMS pour vérifier que l’affectation est correcte  
+Créer la variable d’environnement NOMS ayant pour contenu vos noms de binômes séparés par un espace.Afficher la valeur de NOMS pour vérifier que l’affectation est correcte  
 export NOMS=Portaz Aynard  
 echo $NOMS  
 le résultat est Portaz  
-Pour mettre l'space il faut écrire : export NOMS='Portaz Aynard'
+Pour mettre l'espace il faut écrire : export NOMS='Portaz Aynard'
 
 **8**
-Ecrivez une commande qui aﬀiche ”Bonjour à vous deux, binôme1 binôme2!” (où binôme1 et binôme2sont vos deux noms) en utilisant la variable NOMS.  export NOMS  
+Ecrivez une commande qui aﬀiche ”Bonjour à vous deux, binôme1 binôme2!” (où binôme1 et binôme2 sont vos deux noms) en utilisant la variable NOMS.  export NOMS  
 export NOMS='Bonjour à vous deux, Portaz et Aynard'
 echo $NOMS
 
@@ -57,21 +57,50 @@ Utilisez la commande echo pour écrire exactement la phrase :$HOME =chemin (où 
 echo ':$HOME ='$HOME
 
 
-
 *Programmation Bash*
 ------------
+Vous enregistrerez vos scripts dans un dossier script que vous créerez dans votre répertoire personnel.Tous les scripts sont bien entendu à tester.Ajoutez le chemin vers script à votre PATH de manière permanente  
+export PATH=$PATH:$PWD (à condition que l'on soit dans le bon répertoire : le répertoire script).
 
-
-*Contrôle de mot de passe*
+*Exercice 2 - Contrôle de mot de passe*
 ------------
+Écrivez un script testpwd.sh qui demande de saisir un mot de passe et vérifie s’il correspond ou non au contenu d’une variable PASSWORD dont le contenu est codé en dur dans le script. Le mot de passe saisi par l’utilisateur ne doit pas s’afficher    
+vim testpwd.sh //Crée le fichier si il n'existe pas  
+Dans le script : (on n'utilise pas PASSWORD mais directement la valeur)   
+```bash
+#!/bin/bash
+echo 'Saisir un mot de passe'
+read -s MDP
+if [ "$MDP" == "tp" ]; then echo 'correct'
+else echo 'Faux'
+        fi
+```
+Ensuite il faut sortir du script et faire ./testpwd.sh  
 
 
-
-*Expressions rationelles*
+*Exercice 3 - Expressions rationnelles*
 ------------
+Ecrivez un script qui prend un paramètre et utilise la fonction suivante pour vérifier que ce paramètreest un nombre réel :  
+```bash  
+##!/bin/bash
+function is_number {
+re='^[+-]?[0-9]+([.][0-9]+)?$'
+if ! [[ $1 =~ $re ]] ; then 
+return 1 
+else 
+return 0
+fi
+}
+
+if is_number $1 ; then
+        echo 'Nombre' 
+else echo 'Pas un Nombre'
+fi
+
+```
 
 
-*Contrôle d'utilisateur*
+*Exercice 4 - Contrôle d'utilisateur*
 ------------
 
 
