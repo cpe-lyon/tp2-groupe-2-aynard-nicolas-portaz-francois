@@ -102,17 +102,131 @@ fi
 
 *Exercice 4 - Contrôle d'utilisateur*
 ------------
+Écrivez un script qui vérifie l’existence d’un utilisateur dont le nom est donné en paramètre du script. Si le
+script est appelé sans nom d’utilisateur, il affiche le message : ”Utilisation : nom_du_script nom_utilisateur”,
+où nom_du_script est le nom de votre script récupéré automatiquement (si vous changez le nom de votre
+script, le message doit changer automatiquement)
 
+```bash  
+#!/bin/bash
 
-*Factorielle*
+if [ -z $1 ];then
+	echo "Utilisation : $0 nom_utilisateur"
+else
+	for user in $(cut -d: -f1 /etc/passwd)
+	do
+		if [ $user = $1 ];then
+			echo "Nom d'utilisateur trouvé "
+			exit
+		fi
+	done
+	echo "Nom d'utilisateur non trouvé"
+fi
+```
+
+*Exercice 5 - Factorielle*
+------------
+Écrivez un programme qui calcule la factorielle d’un entier naturel passé en paramètre (on supposera que l’utilisateur saisit toujours un entier naturel).
+```bash  
+#!/bin/bash
+
+function factorielle()
+{
+  FACT=$FACT*$1
+  $1="$1"-1
+  if ! [ $1 = 1 ]; then
+    fact $1
+  fi
+}
+
+export FACT=1
+fact $1
+echo "$FACT"
+```
+*Exercice 6 - Le juste prix*
+------------
+Écrivez un script qui génère un nombre aléatoire entre 1 et 1000 et demande à l’utilisateur de le deviner.
+Le programme écrira ”C’est plus !”, ”C’est moins !” ou ”Gagné !” selon les cas (vous utiliserez $RANDOM).
+```bash  
+#!/bin/bash
+
+prix=$((RANDOM%1000)+1)
+
+echo "Trouvez la bonne valeur (entre 1 et 1000) : "
+while [ $var -ne $prix ]
+do
+read var
+if [ $var -gt $prix ]; then
+  echo 'C'est moins !'
+fi
+if [ $var -lt $prix ]; then
+  echo 'C'est plus !'
+fi
+done
+
+echo 'Gagné !'
+```
+
+*Exercice 7 - Statistiques*
 ------------
 
+*Question 1 & 2 :* Écrivez un script qui prend en paramètres trois entiers (entre -100 et +100) et aﬀiche le min, le max et la moyenne. Vous pouvez réutiliser la fonction de l’exercice 3 pour vous assurer que les paramètres sont bien des entiers.  
+Généralisez le programme à un nombre quelconque de paramètres (pensez à SHIFT)  
 
-*Le juste prix*
-------------
+```bash  
+#!/bin/bash
+MIN=$1
+MAX=$1
+MOY=0
+TOT=$#
+for i in $(seq 1 $#)
+do
+    if [[ $1 -gt 100 || $1 -lt "-100" ]]; then
+        echo "Paramètre éronné"
+        exit 1
+    else
+    if [[ $1 -gt $MAX ]]; then
+        MAX=$1
+    elif [[ $1 -lt $MIN ]]; then
+        MIN=$1
+    fi
+    MOY=$(($MOY+$1))
+    shift
+    fi
+done
+    MOY=$(($MOY/$TOT))
+    echo "Valeur max: "$MAX
+    echo "Valeur min: "$MIN
+    echo "Valeur moyenne: "$MOY
+```
+*Question 3 :* Modifiez votre programme pour que les notes ne soient plus données en paramètres, mais saisies et
+stockées au fur et à mesure dans un tableau  
 
-
-*Le juste prix*
-------------
-
+```bash  
+#!/bin/bash
+MIN=$1
+MAX=$1
+MOY=0
+TOT=$1
+for i in $(seq 1 $1);do
+read -p "Choisissez une valeur:" var
+do
+    if [[ var -gt 100 || var -lt "-100" ]]; then
+        echo "Paramètre éronné"
+        exit 1
+    else
+    if [[ var -gt $MAX ]]; then
+        MAX=var
+    elif [[ var -lt $MIN ]]; then
+        MIN=var
+    fi
+    MOY=$(($MOY+var))
+    shift
+    fi
+done
+    MOY=$(($MOY/$TOT))
+    echo "Valeur max: "$MAX
+    echo "Valeur min: "$MIN
+    echo "Valeur moyenne: "$MOY
+```
 
